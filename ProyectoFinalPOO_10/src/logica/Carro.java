@@ -45,8 +45,20 @@ public class Carro extends MetodoTransporte {
         int intervaloCorto = 120; //CADA 2 HORAS
         int intervaloLargo = 240; // CADA 4 HORAS
         //CALCULAMOS EL NÚMERO DE DESCANSOS CORTOS Y LARGOS NECESARIOS
+        int numDescansosCortos = (int) tiempo/intervaloCorto;
+        int numDescansosLargos = (int) tiempo/intervaloLargo;
         
-		return null;
+        //AÑADIMOS LAS SUGERENCIAS
+        for (int i = 1; i <= numDescansosCortos; i++) {
+            int tiempoDescanso = i * intervaloCorto;
+            sugerenciasDescanso.add("Descanso corto de " + tiempoDescanso + " minutos");
+        }
+
+        for (int i = 1; i <= numDescansosLargos; i++) {
+            int tiempoDescanso = i * intervaloLargo;
+            sugerenciasDescanso.add("Descanso largo de " + tiempoDescanso + " minutos");
+        }
+		return sugerenciasDescanso;
 	}
 	//MÉTODO PARA CALCULAR LA EFICACIA DEL COMBUSTIBLE
 	public double obtenerEficaciaCombustible() {
