@@ -64,4 +64,43 @@ public class Ciudad {
 		//DISTANCIA EN KILÓMETROS
 		return RADIO * c;
 	}
+	public double obtenerLatitudPorCiudad(String ciudad) {
+	    switch (ciudad) {
+	        case "Santarem":
+	            return 39.23; // Latitud de Santarem
+	        case "Leira":
+	            return 39.74; // Latitud de Leira
+	        case "Castelo":
+	            return 39.28; // Latitud de Castelo
+	        case "Coimbra":
+	            return 40.21; // Latitud de Coimbra
+	        case "Guarda":
+	            return 40.54; // Latitud de Guarda
+	        case "Aveiro":
+	            return 40.64; // Latitud de Aveiro
+	        default:
+	            // Devuelve un valor por defecto o maneja el caso no encontrado
+	            return 0.0;
+	    }
+	}
+
+	public double obtenerLongitudPorCiudad(String ciudad) {
+	    switch (ciudad) {
+	        case "Santarem":
+	            return -8.68; // Longitud de Santarem
+	        case "Leira":
+	            return -8.81; // Longitud de Leira
+	        case "Castelo":
+	            return -7.50; // Longitud de Castelo
+	        case "Coimbra":
+	            return -8.41; // Longitud de Coimbra
+	        case "Guarda":
+	            return -7.27; // Longitud de Guarda
+	        case "Aveiro":
+	            return -8.63; // Longitud de Aveiro
+	        default:
+	            // Devuelve un valor por defecto o maneja el caso no encontrado
+	            return 0.0;
+	    }
+	}
 }

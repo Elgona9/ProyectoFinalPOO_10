@@ -20,8 +20,17 @@ import java.awt.Image;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import gui.Bienvenida;
+import gui.MostrarRuta;
+import logica.MetodoTransporte;
+import logica.APie;
+import logica.Bicicleta;
+import logica.Moto;
+import logica.Carro;
+import logica.Ciudad;
 
 import javax.swing.SwingConstants;
 
@@ -33,23 +42,6 @@ public class Principal {
 	public JFrame getFrame() {
 		return frame;
 	}
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Principal window = new Principal();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
@@ -138,15 +130,100 @@ public class Principal {
 		lblP4.setBounds(656, 458, 70, 24);
 		frame.getContentPane().add(lblP4);
 		
+		JComboBox comboBox_MT = new JComboBox();
+		comboBox_MT.setModel(new DefaultComboBoxModel(new String[] {"Caminando", "Bicicleta", "Moto", "Carro"}));
+		comboBox_MT.setMaximumRowCount(4);
+		comboBox_MT.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+		comboBox_MT.setBounds(45, 238, 123, 30);
+		frame.getContentPane().add(comboBox_MT);
+		
 		JButton btnNewButton_2_1_1 = new JButton("Viajar");
 		btnNewButton_2_1_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String origen = (String) comboBox_Origen.getSelectedItem();
-				String destino= (String) comboBox_Destino.getSelectedItem();
-				MostrarRuta mn = new MostrarRuta(origen, destino);
-				mn.setVisible(true);			
-				frame.dispose();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        String origen = (String) comboBox_Origen.getSelectedItem();
+		        String destino = (String) comboBox_Destino.getSelectedItem();
+		        Ciudad ciudad = new Ciudad();
+		        double latOrigen = ciudad.obtenerLatitudPorCiudad(origen);
+		        double lonOrigen = ciudad.obtenerLongitudPorCiudad(origen);
+		        double latDestino = ciudad.obtenerLatitudPorCiudad(destino);
+		        double lonDestino = ciudad.obtenerLongitudPorCiudad(destino);
+		        double distanciaTotal = ciudad.calcularDistancia(latOrigen, latDestino, lonOrigen, lonDestino);
+
+		        // Obtener las paradas seleccionadas
+		        List<String> paradas = new ArrayList<>();
+		        paradas.add(origen);
+		        paradas.add((String) comboBox_P1.getSelectedItem());
+		        paradas.add((String) comboBox_P2.getSelectedItem());
+		        paradas.add((String) comboBox_P3.getSelectedItem());
+		        paradas.add((String) comboBox_P4.getSelectedItem());
+		        paradas.add(destino);
+
+		        // Calcular la distancia total sumando las distancias entre ciudades consecutivas
+		        for (int i = 0; i < paradas.size() - 1; i++) {
+		            String ciudadActual = paradas.get(i);
+		            String ciudadSiguiente = paradas.get(i + 1);
+
+		            double latActual = ciudad.obtenerLatitudPorCiudad(ciudadActual);
+		            double lonActual = ciudad.obtenerLongitudPorCiudad(ciudadActual);
+		            double latSiguiente = ciudad.obtenerLatitudPorCiudad(ciudadSiguiente);
+		            double lonSiguiente = ciudad.obtenerLongitudPorCiudad(ciudadSiguiente);
+
+		            distanciaTotal += ciudad.calcularDistancia(latActual, latSiguiente, lonActual, lonSiguiente);
+		        }		        
+		        frame.dispose();
+		        String medioTransporteSeleccionado = (String) comboBox_MT.getSelectedItem();
+		        double tiempo = 0;
+		        int numParadasGasolina = 0;
+		        int numParadasDescanso = 0;
+
+		        MostrarRuta mn;
+
+		        // Crear instancia del medio de transporte seleccionado
+		        switch (medioTransporteSeleccionado) {
+		            case "Caminando":
+		                MetodoTransporte caminando = new APie();
+		                ((APie) caminando).setVelocidadPromedio(5);
+		                tiempo = ((APie) caminando).calcularTiempo(distanciaTotal);
+		                numParadasDescanso = ((APie) caminando).sugerirDescanso(tiempo);
+		                mn = new MostrarRuta(origen, destino, tiempo, numParadasDescanso, numParadasGasolina);
+		                mn.setVisible(true);
+		                break;
+		            case "Bicicleta":
+		                MetodoTransporte bici = new Bicicleta();
+		                ((Bicicleta) bici).setVelocidadPromedio(20);
+		                tiempo = ((Bicicleta) bici).calcularTiempo(distanciaTotal);
+		                numParadasDescanso = ((Bicicleta) bici).sugerirDescanso(tiempo);
+		                mn = new MostrarRuta(origen, destino, tiempo, numParadasDescanso, numParadasGasolina);
+		                mn.setVisible(true);
+		                break;
+		            case "Moto":
+		                MetodoTransporte moto = new Moto();
+		                ((Moto) moto).setVelocidadPromedio(80);
+		                ((Moto) moto).setCapacidadTanque(15);
+		                tiempo = ((Moto) moto).calcularTiempo(distanciaTotal);
+		                numParadasGasolina = (int) ((Moto) moto).sugerirParadasGasolina(distanciaTotal);
+		                numParadasDescanso = ((Moto) moto).sugerirDescanso(tiempo);
+		                mn = new MostrarRuta(origen, destino, tiempo, numParadasDescanso, numParadasGasolina);
+		                mn.setVisible(true);
+		                break;
+		            case "Carro":
+		                MetodoTransporte carro = new Carro();
+		                ((Carro) carro).setVelocidadPromedio(80);
+		                ((Carro) carro).setCapacidadTanque(60);
+		                tiempo = ((Carro) carro).calcularTiempo(distanciaTotal);
+		                numParadasGasolina = (int) ((Carro) carro).sugerirParadasGasolina(distanciaTotal);
+		                numParadasDescanso = ((Carro) carro).sugerirDescanso(tiempo);
+		                mn = new MostrarRuta(origen, destino, tiempo, numParadasDescanso, numParadasGasolina);
+		                mn.setVisible(true);
+		                break;
+		            default:
+		                MetodoTransporte caminado = new APie();
+		                ((APie) caminado).setVelocidadPromedio(5);
+		                tiempo = ((APie) caminado).calcularTiempo(distanciaTotal);
+		                mn = new MostrarRuta(origen, destino, tiempo, numParadasDescanso, numParadasGasolina);
+		                mn.setVisible(true);
+		        }
+		    }
 		});
 		
 		btnNewButton_2_1_1.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
@@ -181,14 +258,6 @@ public class Principal {
 		lblMedioDeTransporte.setBounds(24, 210, 176, 24);
 		frame.getContentPane().add(lblMedioDeTransporte);
 		
-		JComboBox comboBox_MT = new JComboBox();
-		comboBox_MT.setModel(new DefaultComboBoxModel(new String[] {"Caminando", "Bicicleta", "Moto", "Carro"}));
-		comboBox_MT.setMaximumRowCount(4);
-		comboBox_MT.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-		comboBox_MT.setBounds(45, 238, 123, 30);
-		frame.getContentPane().add(comboBox_MT);
-		
-	
 		
 		JLabel lblmapa = new JLabel();
 		lblmapa.setBounds(272, 19, 440, 401);

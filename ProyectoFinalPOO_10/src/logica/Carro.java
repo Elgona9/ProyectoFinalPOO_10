@@ -38,15 +38,16 @@ public class Carro extends MetodoTransporte {
 	}
 	//OBTENER DESCANSOS
 	@Override
-	public List<String> sugerirDescanso(double tiempo) {
+	public int sugerirDescanso(double tiempo) {
 		// TODO Auto-generated method stub
+		double tiempoEnMinutos = tiempo*60;
         List<String> sugerenciasDescanso = new ArrayList<>();
         //DEFINIMOS INTERVALOS DE TIEMPO PARA DESCANSOS (en minutos)
-        int intervaloCorto = 120; //CADA 2 HORAS
-        int intervaloLargo = 240; // CADA 4 HORAS
+        int intervaloCorto = 60; //CADA 1 HORA
+        int intervaloLargo = 120; // CADA 2 HORAS
         //CALCULAMOS EL NÚMERO DE DESCANSOS CORTOS Y LARGOS NECESARIOS
-        int numDescansosCortos = (int) tiempo/intervaloCorto;
-        int numDescansosLargos = (int) tiempo/intervaloLargo;
+        int numDescansosCortos = (int) tiempoEnMinutos/intervaloCorto;
+        int numDescansosLargos = (int) tiempoEnMinutos/intervaloLargo;
         
         //AÑADIMOS LAS SUGERENCIAS
         for (int i = 1; i <= numDescansosCortos; i++) {
@@ -58,7 +59,7 @@ public class Carro extends MetodoTransporte {
             int tiempoDescanso = i * intervaloLargo;
             sugerenciasDescanso.add("Descanso largo de " + tiempoDescanso + " minutos");
         }
-		return sugerenciasDescanso;
+		return sugerenciasDescanso.size();
 	}
 	//MÉTODO PARA CALCULAR LA EFICACIA DEL COMBUSTIBLE
 	public double obtenerEficaciaCombustible() {
@@ -72,17 +73,10 @@ public class Carro extends MetodoTransporte {
 		return distanciaMaxima;
 	}
 	//MÉTODO PARA SUGERIR PARADAS PARA LLENAR COMBUSTIBLE
-    public List<String> sugerirParadasGasolina(int distanciaTotal) {
-        List<String> sugerenciasGasolina = new ArrayList<>();
+    public double sugerirParadasGasolina(double distanciaTotal) {
 
-    	int numParadasGasolina = (int) Math.ceil(distanciaTotal / distanciaMaxima());
-    	
-    	//PROCEDEMOS A AÑADIR LAS SUGERENCIAS
-    	for (int i = 1; i <= numParadasGasolina; i++) {
-    		int distanciaRecorrida = i * (int) distanciaMaxima();
-    		sugerenciasGasolina.add("Parada para gasolina después de recorrer" + distanciaRecorrida + "kilómetros.");
-    	}
-    	return sugerenciasGasolina;
+    	double numParadasGasolina = Math.ceil(distanciaTotal / distanciaMaxima());
+    	return numParadasGasolina;
     }
 
 }

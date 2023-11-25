@@ -27,8 +27,7 @@ public class MostrarRuta extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;	
 
-	public MostrarRuta(String origen, String destino) {
-		
+	public MostrarRuta(String origen, String destino, double tiempo, int numParadasDescanso, int numParadasGasolina){
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 967, 661);
@@ -46,47 +45,43 @@ public class MostrarRuta extends JFrame {
 		mostrarGifs(origen, destino, lblmostrar, new HashSet<>());
 
 		 
-		 
-		JLabel lblKilomentros = new JLabel("Kilómetros");
-		lblKilomentros.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		lblKilomentros.setBounds(10, 56, 123, 24);
-		contentPane.add(lblKilomentros);
-		
-	
-		JLabel lblNewLabel = new JLabel("aaaa");
-		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		lblNewLabel.setBounds(10, 87, 116, 24);
-		contentPane.add(lblNewLabel);
 		
 		JLabel lblTiempoTotal = new JLabel("Tiempo Total");
 		lblTiempoTotal.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		lblTiempoTotal.setBounds(10, 121, 123, 24);
 		contentPane.add(lblTiempoTotal);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(10, 155, 116, 24);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblTiempoMostrar = new JLabel("New label");
+		lblTiempoMostrar.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		lblTiempoMostrar.setBounds(10, 155, 116, 24);
+		lblTiempoMostrar.setText(String.format("%.2f horas", tiempo));
+		contentPane.add(lblTiempoMostrar);
 		
-		JLabel lblParadas = new JLabel("# Paradas");
-		lblParadas.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		JLabel lblParadas = new JLabel("# Paradas descanso");
+		lblParadas.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		lblParadas.setBounds(10, 189, 123, 24);
 		contentPane.add(lblParadas);
 		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		lblNewLabel_2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(10, 223, 116, 24);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblParadasMostrar = new JLabel("New label");
+		lblParadasMostrar.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		lblParadasMostrar.setBounds(10, 223, 116, 24);
+		lblParadasMostrar.setText(Integer.toString(numParadasDescanso));
+		contentPane.add(lblParadasMostrar);
 		
 		JLabel lblGasolina = new JLabel("Gasolina");
 		lblGasolina.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		lblGasolina.setBounds(10, 257, 123, 24);
 		contentPane.add(lblGasolina);
 		
-		JLabel lblNewLabel_2_1 = new JLabel("New label");
-		lblNewLabel_2_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		lblNewLabel_2_1.setBounds(10, 290, 116, 24);
-		contentPane.add(lblNewLabel_2_1);
+		JLabel lblGasolinaMostrar = new JLabel("New label");
+		lblGasolinaMostrar.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		lblGasolinaMostrar.setBounds(10, 290, 116, 24);
+		if(numParadasGasolina == 0) {
+			lblGasolinaMostrar.setText("N/A");
+		}else {
+			lblGasolinaMostrar.setText(Integer.toString(numParadasGasolina));
+		}
+		contentPane.add(lblGasolinaMostrar);
 		
 		JButton btnNewButton = new JButton("VOLVER");
 		btnNewButton.addActionListener(new ActionListener() {

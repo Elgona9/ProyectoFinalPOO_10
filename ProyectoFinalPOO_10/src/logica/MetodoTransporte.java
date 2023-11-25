@@ -38,5 +38,5 @@ public abstract class MetodoTransporte {
 	//MÉTODO PARA CALCULAR EL TIEMPO ESTIMADO DE VIAJE
 	public abstract double calcularTiempo(double distancia);
 	//MÉTODO PARA SUGERIR DESCANSOS
-	public abstract List<String> sugerirDescanso(double tiempo);
+	public abstract int sugerirDescanso(double tiempo);
 }

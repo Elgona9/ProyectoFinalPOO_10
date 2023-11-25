@@ -19,15 +19,16 @@ public class APie extends MetodoTransporte {
 	}
 
 	@Override
-	public List<String> sugerirDescanso(double tiempo) {
+	public int sugerirDescanso(double tiempo) {
 		// TODO Auto-generated method stub
+		double tiempoEnMinutos = tiempo*60;
         List<String> sugerenciasDescanso = new ArrayList<>();
         //DEFINIMOS INTERVALOS DE TIEMPO PARA DESCANSOS (en minutos)
-        int intervaloCorto = 120; //CADA 2 HORAS
-        int intervaloLargo = 240; // CADA 4 HORAS
+        int intervaloCorto = 60; //CADA 1 HORA
+        int intervaloLargo = 120; // CADA 2 HORAS
         //CALCULAMOS EL NÚMERO DE DESCANSOS CORTOS Y LARGOS NECESARIOS
-        int numDescansosCortos = (int) tiempo/intervaloCorto;
-        int numDescansosLargos = (int) tiempo/intervaloLargo;
+        int numDescansosCortos = (int) tiempoEnMinutos/intervaloCorto;
+        int numDescansosLargos = (int) tiempoEnMinutos/intervaloLargo;
         
         //AÑADIMOS LAS SUGERENCIAS
         for (int i = 1; i <= numDescansosCortos; i++) {
@@ -39,6 +40,6 @@ public class APie extends MetodoTransporte {
             int tiempoDescanso = i * intervaloLargo;
             sugerenciasDescanso.add("Descanso largo de " + tiempoDescanso + " minutos");
         }
-		return sugerenciasDescanso;
+		return sugerenciasDescanso.size();
 	}
 }
