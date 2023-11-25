@@ -158,18 +158,34 @@ public class Principal {
 		        paradas.add((String) comboBox_P4.getSelectedItem());
 		        paradas.add(destino);
 
-		        // Calcular la distancia total sumando las distancias entre ciudades consecutivas
 		        for (int i = 0; i < paradas.size() - 1; i++) {
 		            String ciudadActual = paradas.get(i);
 		            String ciudadSiguiente = paradas.get(i + 1);
 
-		            double latActual = ciudad.obtenerLatitudPorCiudad(ciudadActual);
-		            double lonActual = ciudad.obtenerLongitudPorCiudad(ciudadActual);
-		            double latSiguiente = ciudad.obtenerLatitudPorCiudad(ciudadSiguiente);
-		            double lonSiguiente = ciudad.obtenerLongitudPorCiudad(ciudadSiguiente);
+		            // Verificar si la parada actual y la siguiente no son "Ninguna"
+		            if (!ciudadActual.equals("Ninguna") && !ciudadSiguiente.equals("Ninguna")) {
+		                double latActual = ciudad.obtenerLatitudPorCiudad(ciudadActual);
+		                double lonActual = ciudad.obtenerLongitudPorCiudad(ciudadActual);
+		                double latSiguiente = ciudad.obtenerLatitudPorCiudad(ciudadSiguiente);
+		                double lonSiguiente = ciudad.obtenerLongitudPorCiudad(ciudadSiguiente);
 
-		            distanciaTotal += ciudad.calcularDistancia(latActual, latSiguiente, lonActual, lonSiguiente);
-		        }		        
+		                distanciaTotal += ciudad.calcularDistancia(latActual, latSiguiente, lonActual, lonSiguiente);
+		            }
+		        }
+
+		        // Sumar la distancia directa entre el origen y la primera parada
+		        if (!paradas.get(0).equals("Ninguna")) {
+		            double latPrimeraParada = ciudad.obtenerLatitudPorCiudad(paradas.get(0));
+		            double lonPrimeraParada = ciudad.obtenerLongitudPorCiudad(paradas.get(0));
+		            distanciaTotal += ciudad.calcularDistancia(latOrigen, latPrimeraParada, lonOrigen, lonPrimeraParada);
+		        }
+
+		        // Sumar la distancia directa entre la última parada y el destino
+		        if (!paradas.get(paradas.size() - 1).equals("Ninguna")) {
+		            double latUltimaParada = ciudad.obtenerLatitudPorCiudad(paradas.get(paradas.size() - 1));
+		            double lonUltimaParada = ciudad.obtenerLongitudPorCiudad(paradas.get(paradas.size() - 1));
+		            distanciaTotal += ciudad.calcularDistancia(latUltimaParada, latDestino, lonUltimaParada, lonDestino);
+		        }       
 		        frame.dispose();
 		        String medioTransporteSeleccionado = (String) comboBox_MT.getSelectedItem();
 		        double tiempo = 0;

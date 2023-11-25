@@ -22,6 +22,7 @@ import java.awt.Color;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+import persistencia.Archivos;
 public class MostrarRuta extends JFrame {
 	private Map<String, List<String>> mapaConexiones = new HashMap<>();
 	private static final long serialVersionUID = 1L;
@@ -68,8 +69,8 @@ public class MostrarRuta extends JFrame {
 		lblParadasMostrar.setText(Integer.toString(numParadasDescanso));
 		contentPane.add(lblParadasMostrar);
 		
-		JLabel lblGasolina = new JLabel("Gasolina");
-		lblGasolina.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		JLabel lblGasolina = new JLabel("Paradas gasolina");
+		lblGasolina.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		lblGasolina.setBounds(10, 257, 123, 24);
 		contentPane.add(lblGasolina);
 		
@@ -94,6 +95,15 @@ public class MostrarRuta extends JFrame {
 		
 		btnNewButton.setBounds(10, 568, 85, 21);
 		contentPane.add(btnNewButton);
+		
+		JButton btnGuardar = new JButton("GUARDAR");
+		btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnGuardar.setBounds(10, 529, 85, 21);
+		contentPane.add(btnGuardar);
 		
 	
 	}
@@ -215,7 +225,7 @@ public class MostrarRuta extends JFrame {
 	    }
 	}
 
-	private void mostrarGifs(String ciudadActual, String destino, JLabel lblmostrar, Set<String> ciudadesVisitadas) {
+	public void mostrarGifs(String ciudadActual, String destino, JLabel lblmostrar, Set<String> ciudadesVisitadas) {
 	    try {
 	        // Verificar si la ciudad actual ya ha sido visitada
 	        if (ciudadesVisitadas.contains(ciudadActual)) {
@@ -243,7 +253,4 @@ public class MostrarRuta extends JFrame {
 	        JOptionPane.showMessageDialog(null, "Error cargando la imagen: " + e.getMessage());
 	    }
 	}
-
-
-	
 }
