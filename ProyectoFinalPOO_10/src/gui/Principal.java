@@ -489,25 +489,25 @@ public class Principal {
 		    
 		    JButton btnMostrarRutaGuardada = new JButton("Mostrar ruta guardada");
 		    btnMostrarRutaGuardada.addActionListener(new ActionListener() {
-		    	public void actionPerformed(ActionEvent e) {
-		    		Archivos archivo = new Archivos();
-		    		try {
+		        public void actionPerformed(ActionEvent e) {
+		            Archivos archivo = new Archivos();
+		            try {
 		                ArrayList<Almacenado> rutasGuardadas = archivo.leer();
 		                //Comprueba si hay rutas guardadas
 		                if(!rutasGuardadas.isEmpty()) {
-		                	//Seleccionar una ruta para mostrar (en este caso la primera)
-		                	Almacenado ruta = rutasGuardadas.get(0);
-		                	//Muestra información de la ruta
-		                	MostrarRuta mr = new MostrarRuta(ruta.getOrigen(), ruta.getDestino(), ruta.getTiempoEstimado(), ruta.getNumParadasDescanso(), ruta.getNumParadasGasolina());
-		                	mr.setVisible(true);
+		                    //Seleccionar una ruta para mostrar (en este caso la última)
+		                    Almacenado ruta = rutasGuardadas.get(rutasGuardadas.size() - 1); //MUESTRA LA ULTIMA RUTA GUARDADA
+		                    //Muestra información de la ruta
+		                    MostrarRuta mr = new MostrarRuta(ruta.getOrigen(), ruta.getDestino(), ruta.getTiempoEstimado(), ruta.getNumParadasDescanso(), ruta.getNumParadasGasolina());
+		                    mr.setVisible(true);
 		                }else {
 		                    JOptionPane.showMessageDialog(null, "No hay rutas guardadas.");
 		                }
-		    		} catch(ClassNotFoundException | IOException ex) {
-		    			ex.printStackTrace();
+		            } catch(ClassNotFoundException | IOException ex) {
+		                ex.printStackTrace();
 		                JOptionPane.showMessageDialog(null, "Hubo un error al leer las rutas guardadas.");
-		    		}
-		    	}
+		            }
+		        }
 		    });
 		    btnMostrarRutaGuardada.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 18));
 		    btnMostrarRutaGuardada.setActionCommand("Salir");
