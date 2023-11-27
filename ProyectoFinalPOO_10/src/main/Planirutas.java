@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import gui.Bienvenida;
 
-public class Principal {
+public class Planirutas {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
