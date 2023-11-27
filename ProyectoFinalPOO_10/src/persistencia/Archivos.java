@@ -4,50 +4,40 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import gui.MostrarRuta;
+import logica.Almacenado;
 
 public class Archivos {
-    private DataOutputStream archivo = null;
-    private DataInputStream entrada = null;
-    MostrarRuta mr;
-
-    public void abrir(String nombreArchivo) throws FileNotFoundException {
-        try {
-            archivo = new DataOutputStream(new FileOutputStream(nombreArchivo, true));
-            entrada = new DataInputStream(new FileInputStream(nombreArchivo));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    public void cerrar() throws IOException {
-        try {
-            if (archivo != null) {
-                archivo.close();
+    public ArrayList<Almacenado> leer() throws IOException, ClassNotFoundException{
+    	ArrayList<Almacenado> list = new ArrayList<>();
+        FileInputStream fileInputStream = new FileInputStream("Ruta.ser");
+        try(ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);){    
+            while (true) {
+            	Almacenado ruta = (Almacenado) objectInputStream.readObject();
+            	list.add(ruta);
+            	}
+            }catch (EOFException e) {
+            }catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
-            if (entrada != null) {
-                entrada.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
+            return list;
         }
-    }
 
-    public void escribirRuta(String origen, String destino, double tiempo, int numParadasDescanso, int numParadasGasolina) throws IOException {
+    public void guardar(Almacenado obj)throws IOException, ClassNotFoundException{
+        ArrayList<Almacenado> list = new ArrayList<>();
         try {
-            archivo.writeUTF(origen);
-            archivo.writeUTF(destino);
-            archivo.writeDouble(tiempo);
-            archivo.writeInt(numParadasDescanso);
-            archivo.writeInt(numParadasGasolina);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
+            list= leer();
+        }catch(Exception e) {
+        	
+        }list.add(obj);
+        FileOutputStream fileOutputStream = new FileOutputStream("Ruta.ser");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        if(!list.isEmpty()){
+            for(int i = 0; i < list.size(); i++){
+                objectOutputStream.writeObject(list.get(i));
+            }
         }
+        objectOutputStream.close();
     }
 }

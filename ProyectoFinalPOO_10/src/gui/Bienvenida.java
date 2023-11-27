@@ -1,4 +1,4 @@
-//Sebastián Rangel, Nicolas Jimenez, David Riveros
+      //Sebastián Rangel, Nicolas Jimenez, David Riveros
 //14 de Noviembre de 2023
 //Pantalla de Bienvenida
 
